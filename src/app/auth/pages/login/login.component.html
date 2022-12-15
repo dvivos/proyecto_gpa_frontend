@@ -1,0 +1,83 @@
+    <p-card header="Iniciar sesión"
+            subheader="Introduzca su correo electrónico y su contraseña"
+            class="card">
+
+        <ng-template pTemplate="header">
+            <img alt="Logo" src="assets/logo_big.svg" height="150" class="mt-3 mb-5">
+            <div class="flex justify-content-center">
+              <div class="font-bold text-2xl titulo">Gestión de Procesos Auxiliares</div>
+
+            </div>
+            <hr>
+
+        </ng-template>
+
+        <p-blockUI [blocked]="blocked">
+            <p-progressSpinner></p-progressSpinner>
+        </p-blockUI>
+
+        <p-dialog header="Error"
+                  [(visible)]="mostrarDialog"
+                  [modal]="true"
+                  [style]="{width: '40vw'}"
+                  [draggable]="false"
+                  [closable]="false"
+                  [resizable]="false">
+            <p class="m-0">{{ msgErr }}</p>
+            <ng-template pTemplate="footer">
+              <p-button icon="pi pi-check" (click)="mostrarDialog=false" label="Ok" styleClass="p-button-text"></p-button>
+            </ng-template>
+        </p-dialog>
+
+        <form autocomplete="off"
+              [formGroup]="formLogin"
+              (ngSubmit)="submitLogin()">
+
+            <!-- correo electrónico -->
+            <div class="field mt-2 mb-5">
+                <label for="email" class="font-bold">Email</label>
+                <input class="w-full"
+                       type="text"
+                       formControlName="email"
+                       pInputText
+                       placeholder="Email del usuario">
+                <span class="aviso from-text text-danger"
+                      *ngIf="campoNoValido('email')">
+                       {{ emailErrorsMsg }}
+                </span>
+            </div>
+
+
+            <div class="field mt-3 mb-5">
+              <label for="password" class="font-bold">Contraseña</label>
+              <input class="w-full"
+                     type="password"
+                     formControlName="password"
+                     pInputText
+                     placeholder="Password del usuario">
+              <span class="aviso from-text text-danger"
+                    *ngIf="campoNoValido('password')">
+                    Debe informar la contraseña
+              </span>
+            </div>
+
+            <button pButton type="submit"
+                            label="Login"
+                            [disabled]="!formLogin.valid"
+                            class="mt-4"></button>
+
+        </form>
+
+        <div class="felx mt-4">
+          <div class="flex align-items-center justify-content-center text-500 font-medium">¿No tiene cuenta?</div>
+          <div class="flex align-items-center justify-content-center mt-4">
+            <button pButton pRipple type="button" label="Crear una aquí" class="p-button-text" routerLink="/auth/registro"></button>
+          </div>
+        </div>
+
+    </p-card>
+
+
+
+
+

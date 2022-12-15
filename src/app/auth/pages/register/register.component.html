@@ -1,0 +1,106 @@
+<p-card class="card"
+        header="Registro"
+        subheader="Registro de un nuevo usuario">
+      <ng-template pTemplate="header">
+          <img alt="Logo" src="assets/logo_big.svg" height="100" class="mt-3 mb-5">
+
+      </ng-template>
+
+
+  <form autocomplete="off"
+        [formGroup]="formRegistro"
+        (ngSubmit)="submitRegistro()">
+
+
+        <div class="field mt-2 mb-3">
+            <label for="nombre" class="font-bold">Nombre</label>
+            <input class="w-full"
+                   type="text"
+                   formControlName="nombre"
+                   pInputText
+                   placeholder="Nombre del usuario">
+            <span class="aviso from-text text-danger mt-3"
+                    *ngIf="campoNoValido('nombre')">
+                    El nombre debe tener al menos 3 caracteres
+            </span>
+
+        </div>
+
+        <div class="field mb-3">
+          <label for="apellidos" class="font-bold">Apellidos</label>
+          <input class="w-full"
+                 type="text"
+                 formControlName="apellidos"
+                 pInputText
+                 placeholder="Apellidos del usuario">
+            <span class="aviso from-text text-danger mt-3"
+                  *ngIf="campoNoValido('apellidos')">
+                  El apellido debe tener al menos 3 caracteres
+            </span>
+        </div>
+
+
+      <div class="field mb-3">
+        <label for="email" class="font-bold">Email</label>
+        <input class="w-full"
+               type="text"
+               formControlName="email"
+               pInputText
+               placeholder="Correo electrónico del usuario">
+          <span class="aviso from-text text-danger"
+               *ngIf="campoNoValido('email')">
+               {{ emailErrorsMsg }}
+         </span>
+      </div>
+
+      <div class="field mb-3">
+          <label for="password" class="font-bold">Contraseña</label>
+          <input class="w-full"
+                 type="password"
+                 formControlName="password"
+                 pInputText
+                 placeholder="Contraseña">
+          <span class="aviso from-text text-danger"
+                *ngIf="campoNoValido('password')">
+                El password debe tener al 6 caracteres
+          </span>
+      </div>
+
+      <div class="field mb-3">
+        <label for="password" class="font-bold">Repetir contraseña</label>
+        <input class="w-full"
+               type="password"
+               formControlName="password2"
+               pInputText
+               placeholder="Repetir contraseña">
+        <span class="aviso from-text text-danger"
+              *ngIf="campoNoValido('password2')">
+             Las contraseñas deben ser iguales
+         </span>
+      </div>
+
+    <div class="flex justify-content-between">
+      <button pButton type="submit"
+                      label="Crear"
+                      [disabled]="!formRegistro.valid"
+                      class="mt-4"></button>
+    </div>
+
+    <div class="felx mt-4">
+        <div class="flex align-items-center justify-content-center text-500 font-medium">¿Ya tiene cuenta?</div>
+        <div class="flex align-items-center justify-content-center mt-4">
+            <button pButton pRipple type="button" label="Ingrese aquí" class="p-button-text" routerLink="/auth/login"></button>
+        </div>
+    </div>
+
+
+  </form>
+
+
+</p-card>
+
+
+
+        <div>
+          {{msgDialog}}
+        </div>

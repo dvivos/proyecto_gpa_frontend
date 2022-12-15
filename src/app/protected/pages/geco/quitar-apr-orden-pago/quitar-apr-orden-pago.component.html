@@ -1,0 +1,200 @@
+<div class="mt-4">
+  <p-panel header="Quitar aprobación a Orden de Pago.">
+
+      <!-- Cuadro de diálogo que muestra mensajes al usuario -->
+    <p-dialog header="{{ infoMensaje }}"
+              [(visible)]="mostrarDialog"
+              [modal]="true"
+              [style]="{width: '40vw'}"
+              [draggable]="false"
+              [closable]="true"
+              icon="pi pi-info-circle"
+              [resizable]="false">
+          <p>{{ msgGeneral }}</p>
+          <ng-template pTemplate="footer">
+            <p-button icon="pi pi-check" (click)="mostrarDialog=false" label="Ok" styleClass="p-button-text"></p-button>
+          </ng-template>
+
+    </p-dialog>
+
+      <div class="mb-5">
+        Quitar la aprobación a una Orden de Pago. El documento debe cumplir estos requisitos:
+        <ul>
+          <li>No puede estar firmado ni enviado a la firma.</li>
+          <li>No puede formar parte de una relación.</li>
+        </ul>
+      </div>
+      <form autocomplete="off"
+            [formGroup]="formulario"
+            (ngSubmit)="buscar()">
+
+          <!-- Input de Entidad de la Orden de pago -->
+        <div class="field mt-2 mb-5">
+          <input pInputText
+                 type="text"
+                 formControlName="entidad"
+                 placeholder="Entidad"
+                 style="text-transform:uppercase;"
+                 pInputText>
+          <label class="ml-3">Entidad de la Orden de pago</label>
+          <br>
+
+          <span class="aviso from-text text-danger mt-3"
+                *ngIf="campoNoValido('entidad')"> {{ msgErrEntidad }} </span>
+        </div>
+
+        <!-- Input del usuario Origen -->
+        <div class="field mt-2 mb-5">
+          <input pInputText
+                 type="number"
+                 formControlName="anio"
+                 placeholder="Año"
+                 pInputText>
+          <label class="ml-3">Año de la Orden de pago</label>
+
+          <br>
+          <span class="aviso from-text text-danger mt-3"
+                *ngIf="campoNoValido('anio')"> El año debe ser del ejercicio actual </span>
+        </div>
+
+        <!-- Input del usuario Origen -->
+        <div class="field mt-2 mb-5">
+          <input pInputText
+                 type="number"
+                 formControlName="numDocum"
+                 placeholder="Número"
+                 pInputText
+                 pattern="[1-9][0-9]*">
+          <label class="ml-3">Número de la orden de pago</label>
+          <br>
+          <span class="aviso from-text text-danger mt-3"
+                *ngIf="campoNoValido('numDocum')"> Debe ser un número entero positivo </span>
+        </div>
+
+
+
+          <div class="flex justify-content-between">
+            <button pButton type="submit"
+                            label="Buscar"
+                            [disabled]="!formulario.valid || this.mostrarDatos"
+                            class="mt-4"></button>
+
+          </div>
+
+          <div class="felx mt-4">
+            <div class="flex align-items-center justify-content-center text-500 font-medium">
+              <span class="aviso from-text text-danger mt-3"
+                *ngIf="msgErrGeneral"> {{ msgErrGeneral }} </span>
+              </div>
+          </div>
+      </form>
+
+    </p-panel>
+
+    <div class="mt-3" *ngIf="mostrarDatos">
+      <p-panel header="Orden de Pago">
+        <ul class="list-none">
+          <li>
+            <span class="font-bold"> Entidad:</span> {{ pago.centidad?.centidad }}
+            <span class="font-bold"> Año MP:</span> {{ pago.ymandpag }}
+            <span class="font-bold"> Número MP:</span> {{ pago.nmandpag }}
+          </li>
+          <li><span class="font-bold"> Importe:</span> {{ pago.importe | currency:'EUR':'':'1.2-2' }} €</li>
+          <li>
+            <span *ngIf="pago.faprobacion != null as valor; else elseAprobacion" >
+              <span class="font-bold"> Fecha aprobación orden de pago:</span> {{ pago.faprobacion }}
+
+            </span>
+            <ng-template #elseAprobacion><span class="font-bold text-red-500">No está aprobado</span></ng-template>
+          </li>
+          <li><span class="font-bold"> Descripción:</span> {{ pago.descripcion! | trim }}</li>
+          <li>
+            <span class="font-bold"> Tercero:</span> {{ pago.cacredeu?.nombre }}
+                                                     {{ pago.cacredeu?.apellido1 }}
+                                                     {{ pago.cacredeu?.apellido2 }}
+          </li>
+          <li>
+            <span *ngIf="pago.nrelorpg! > 0 as valor; else elseRelacion" >
+              <span class="font-bold text-red-500">Relación de órdenes de pago: </span>{{ pago.yrelorpg }}/{{ pago.nrelorpg }}
+            </span>
+            <ng-template #elseRelacion><span class="font-bold">No está en relación</span></ng-template>
+          </li>
+          <li>
+            <span *ngIf="pago.fordenpago as valor; else elseOrdenacion" >
+              <span class="font-bold text-red-500"> Fecha de la orden de pago:</span> {{ pago.fordenpago }}
+            </span>
+            <ng-template #elseOrdenacion><span class="font-bold">No está ordenado al pago</span></ng-template>
+          </li>
+          <li>
+            <span *ngIf="pago.faprobpago as valor; else elseAprPago" >
+              <span class="font-bold text-red-500"> Fecha aprobación del Pago:</span> {{ pago.faprobpago }}
+            </span>
+            <ng-template #elseAprPago><span class="font-bold">No tiene fecha de aprobación del Pago</span></ng-template>
+          </li>
+          <li>
+            <span *ngIf="pago.fanulacion as valor; else elseAnulacion" >
+              <span class="font-bold text-red-500"> Fecha anulación del Pago: </span>{{ pago.fanulacion }}
+            </span>
+            <ng-template #elseAnulacion><span class="font-bold">No tiene fecha de anulación</span></ng-template>
+          </li>
+
+        </ul>
+
+
+      </p-panel>
+      <p-panel header="Documento Contable de la Orden de Pago (P)">
+        <div *ngIf="pago.documento != null; else sinDocumento">
+          <ul class="list-none">
+            <li>
+              <span class="font-bold"> Ejercicio:</span> {{ pago.documento.yejecont }}
+              <span class="font-bold"> Documento Contable:</span>
+                {{ pago.documento.centidad?.centidad }}/{{ pago.documento.ydoconta }}.{{ pago.documento.ndoconta }}
+              <span class="font-bold"> Importe:</span> {{ pago.documento.importe | currency:'EUR':'':'1.2-2' }}€
+            </li>
+            <li>
+                <span *ngIf="pago.documento.facuerop as valor; else elseAprDoc" >
+                  <span class="font-bold"> Fecha aprobación del Documento:</span> {{ pago.documento.facuerop }}
+                </span>
+                <ng-template #elseAprDoc><span class="font-bold text-red-500">No está aprobado</span></ng-template>
+              </li>
+
+            <li>
+              <span *ngIf="pago.documento?.codfirma as valor; else elseFirma" >
+                <span class="font-bold text-red-500"> El documento contable está firmado: </span>{{ pago.documento.codfirma }}
+                <br>
+                <span class="font-bold text-red-500"> Al quitar la fecha de aprobación se eliminará la firma electrónica.</span>
+              </span>
+              <ng-template #elseFirma><span class="font-bold">No tiene firma electrónica</span></ng-template>
+
+            </li>
+            <span *ngIf="pago.documento?.noperdia! > 0" >
+              <li>
+                <span class="font-bold text-red-500">El documento contable está contabilizado:</span>
+                <ul>
+                  <li>
+                    <span class="font-bold">Datos asiento contable: </span>Número: {{ pago.documento.noperdia }} - Fecha asiento: {{ pago.documento.foperdia }}
+                  </li>
+                </ul>
+              </li>
+
+            </span>
+
+          </ul>
+        </div>
+        <ng-template #sinDocumento><span class="font-bold">Sin documento contable asociado</span></ng-template>
+      </p-panel>
+
+      <div class="field mt-2" *ngIf="superUser">
+        <div class="flex justify-content-between">
+          <button  pButton type="submit"
+                         label="Quitar Fecha Aprobación"
+                         class="mt-4"
+                         [disabled]="!valido"
+                         (click)="quitarAprobacion()"></button>
+        </div>
+
+      </div>
+
+
+    </div>
+</div>

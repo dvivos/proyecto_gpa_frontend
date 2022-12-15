@@ -1,0 +1,110 @@
+<div class="mt-4">
+
+    <p-panel header="Cambio de Unidad Tramitadora a usuario.">
+
+      <!-- Cuadro de diálogo que muestra mensajes al usuario -->
+      <p-dialog header="Info"
+              [(visible)]="mostrarDialog"
+              [modal]="true"
+              [style]="{width: '40vw'}"
+              [draggable]="false"
+              [closable]="true"
+              [resizable]="false">
+              <p>{{ msgGeneral }}</p>
+          <ng-template pTemplate="footer">
+            <p-button icon="pi pi-check" (click)="mostrarDialog=false" label="Ok" styleClass="p-button-text"></p-button>
+          </ng-template>
+
+      </p-dialog>
+
+      <!------------------------------------------>
+      <!-- Formulario que solicita el usuario   -->
+      <!------------------------------------------>
+      <form autocomplete="off"
+            [formGroup]="formUser">
+
+        <!-- Input del usuario a buscar -->
+        <div class="field mt-2 mb-5">
+          <input pInputText
+                 type="text"
+                 formControlName="usuarioInput"
+                 pInputText
+                 style="text-transform:uppercase;">
+          <label class="ml-3">Usuario</label>
+            <span *ngIf="usuarioInput">{{ ': ' + usuarioInput.nombre + ' ' +
+                                                 usuarioInput.apellidos }}</span>
+          <br>
+          <span class="aviso from-text text-danger mt-3"> {{ msgErr }} </span>
+        </div>
+      </form>
+
+		<div class="field mt-2 mb-5" *ngIf="superUser && mostrarDatos">
+			<p-dropdown [options]="unidades"
+			            [(ngModel)]="unidadSelected"
+			            placeholder="Seleccionar UT"
+			            optionLabel="descripcion"
+			            [tabindex]="3"
+			            [showClear]="true"></p-dropdown>
+			<label class="ml-3">Nueva UT del usuario: &nbsp;&nbsp;</label>
+      <span *ngIf="unidadSelected">
+        {{ unidadSelected.cutramit }}
+        <div>
+          <!-- Boton submit del formulario -->
+          <div class="flex justify-content-between">
+            <button pButton
+                    type="submit"
+                    label="Cambiar UT del usuario"
+                    [disabled]="!formUser.valid"
+                    class="mt-4"
+                    (click)="accionForm()"></button>
+          </div>
+
+        </div>
+      </span>
+		</div>
+
+    </p-panel>
+
+    <!---------------------------------------------->
+    <!-- Bloque que contiene la tabla de usuario  -->
+    <!---------------------------------------------->
+    <div *ngIf="mostrarDatos === true" class="mt-4">
+      <p-panel header="Datos del usuario" class="" >
+          <p-card header="{{ usuarioInput.nombre + ' ' + usuarioInput.apellidos }}">
+            <ul class="list-none">
+              <li><span class="font-bold"> Código de usuario:</span> {{ usuarioInput.cusuario }}</li>
+
+              <li><span class="font-bold"> Entidad: </span>{{ usuarioInput.centidad?.centidad + ' - ' +
+                                                              usuarioInput.centidad?.xentidad }}
+
+              </li>
+
+              <li><span class="font-bold"> Unidad Tramitadora:</span> {{ usuarioInput.cutramit?.cutramit + ' - ' +
+                                                                         usuarioInput.cutramit?.descorta}}</li>
+
+              <li><span class="font-bold"> Correo:</span> {{ usuarioInput.email }}</li>
+              <li>
+                <span *ngIf="usuarioInput.permisos!.length > 0 as valor; else elseBlock" >
+                  <li><span class="font-bold"> Permisos:</span></li>
+                  <div class="grid ml-3" *ngFor="let permiso of usuarioInput.permisos">
+                    <div class="col-1">{{ permiso.cpermiso }}</div>
+                    <div class="col-11">{{permiso.descripcion}}</div>
+                  </div>
+
+                </span>
+                <ng-template #elseBlock><span class="font-bold">El usuario no tiene permisos asignados.</span></ng-template>
+              </li>
+
+            </ul>
+          </p-card>
+
+
+      </p-panel>
+
+
+
+    </div>
+
+
+
+</div>

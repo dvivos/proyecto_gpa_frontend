@@ -1,0 +1,30 @@
+<div class="mt-4">
+  <p-tabView>
+    <p-tabPanel header="Cambio Permisos">
+       <p>
+         El proceso auxiliar de cambio permisos de un usuario <strong>elimina los permisos de un usuario</strong> y le asigna los de un usuario copia indicado.
+         Este proceso realiza las validaciones necesarias para realizar el cambio correctamente.
+       </p>
+       <p>
+        Hay un formulario que solicita el usuario que va a heredar los permisos y el usuario del que se van a copiar los permisos.
+       </p>
+       <p>
+        Los usuarios deben estar activos y tener la misma Unidad Tramitadora.
+       </p>
+
+        <button pButton label="Ir al proceso" class="p-button-success mt-4"
+                [routerLink]="['/dashboard/pages/usuarios/cambio-permisos']"></button>
+
+
+
+    </p-tabPanel>
+    <p-tabPanel header="Cambio UT a usuario">
+        Cambiar Unidad Tramitadora a un usuario
+    </p-tabPanel>
+    <p-tabPanel header="Quitar Aprobación a Orden de Pago">
+        Quitar la aprobación a una Orden de Pago
+    </p-tabPanel>
+</p-tabView>
+</div>
+
+

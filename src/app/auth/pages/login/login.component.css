@@ -1,0 +1,14 @@
+.contenedor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contenedor div {
+  width: 250px;
+  height: 250px;
+}
+
+.titulo {
+  color: #4caf50;
+}

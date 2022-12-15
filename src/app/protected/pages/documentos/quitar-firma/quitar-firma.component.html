@@ -1,0 +1,55 @@
+<div class="mt-3">
+  <p-panel header="Quitar firma electrónica a documento.">
+      <form autocomplete="off"
+            [formGroup]="formulario"
+            (ngSubmit)="enviar()">
+
+          <span class="p-float-label mt-3 mb-5">
+              <input type="text"
+                    formControlName="entidad"
+                    pInputText>
+              <label for="float-input">Entidad</label>
+              <span class="ml-3">Entidad del documento</span>
+          </span>
+
+          <span class="p-float-label mt-3 mb-5">
+              <input type="text"
+                    formControlName="ejercicio"
+                    pInputText>
+              <label for="float-input">Ejercicio</label>
+              <span class="ml-3">Ejercicio contable del documento</span>
+          </span>
+
+          <span class="p-float-label mt-3 mb-5">
+              <input type="text"
+                    formControlName="anio"
+                    pInputText>
+              <label for="float-input">Año</label>
+              <span class="ml-3">Año del documento</span>
+          </span>
+
+          <span class="p-float-label mt-3 mb-5">
+            <input type="text"
+                  formControlName="numDocum"
+                  pInputText>
+            <label for="float-input">Número</label>
+            <span class="ml-3">Número del documento</span>
+        </span>
+
+          <div class="flex justify-content-between">
+            <button pButton type="submit"
+                          label="Aceptar"
+                          [disabled]="!formulario.valid"
+                          class="mt-4"></button>
+          </div>
+
+          <div class="felx mt-4">
+            <div class="flex align-items-center justify-content-center text-500 font-medium">
+
+            </div>
+          </div>
+      </form>
+  </p-panel>
+
+</div>
+

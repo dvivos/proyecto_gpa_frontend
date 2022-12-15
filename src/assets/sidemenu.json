@@ -1,0 +1,24 @@
+{
+  "data": [
+    {"label": "Cambio Permisos", "routerLink": "/pages/usuarios/cambio-permisos"},
+    {"label": "Permisos en UT",  "routerLink": "/pages/usuarios/permisos-ut"},
+    {"label": "Cambio UT a usuario","routerLink": "/pages/usuarios/cambio-ut"},
+    {"label": "Quitar aprobación Orden Pago",  "routerLink": "/pages/geco/quitar-apr-orden-pago"},
+    {"label": "IRPF Ayudas Familiares",  "routerLink": "/pages/geco/irpf-ayudas"},
+    {"label": "Asociar GAS a FAC",  "routerLink": "/pages/geco/asoc-gas-fac"},
+    {"label": "Buscar MP sin IRPF en Relación",  "routerLink": "/pages/geco/buscar-mp-rel"},
+    {"label": "Quitar firma electrónica","routerLink": "/pages/documentos/quitar-firma"},
+    {"label": "Quitar firma de Relación","routerLink": "/pages/documentos/quitar-firma-rel"},
+    {"label": "Eliminar Documento","routerLink": "/pages/documentos/borrar-doc"},
+    {"label": "Comprobar Fiscalización","routerLink": "/pages/inte/check-fisc"},
+    {"label": "Permisos de Fiscalización","routerLink": "/pages/inte/permisos-fisc"},
+    {"label": "Quitar firma Interventor","routerLink": "/pages/inte/borar-firma-inte"},
+    {"label": "LENLOC","routerLink": "/pages/inte/lenloc"},
+    {"label": "PENLOC","routerLink": "/pages/inte/penloc"},
+    {"label": "Quitar aprobación Pago","routerLink": "/pages/teso/borrar-apr-pago"},
+    {"label": "Actualizar No Presupuestarias","routerLink": "/pages/teso/act-no-prep"},
+    {"label": "Modificar ordinal de un AD","routerLink": "/pages/teso/mod-ord-ad"},
+    {"label": "Comprobar operaciones de un AD","routerLink": "/pages/terceros/check-operaciones"},
+    {"label": "Requisitos Subvención","routerLink": "/pages/sub/req-sub"}
+  ]
+}

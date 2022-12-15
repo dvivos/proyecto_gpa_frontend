@@ -1,0 +1,125 @@
+
+<div class="mt-4">
+    <p-toast></p-toast>
+    <span *ngIf="superUser; else elseSuper">
+
+        <!-- Cuadro de diálogo emergente -->
+        <p-dialog [(visible)]="usuarioDialog"
+                  [style]="{ height: '550px', width: '450px' }"
+                  header="{{ infoMensaje }}"
+                  [modal]="true"
+                  styleClass="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="formgrid grid mb-4">
+                    <div class="field">
+                        {{ usuario.nombre }} {{ usuario.apellidos }}
+                    </div>
+                    <div class="field">
+                        <span class="font-bold"> Entidad: </span>{{ usuario.centidad?.centidad + ' - ' +
+                                                                    usuario.centidad?.xentidad }}
+                    </div>
+                    <div class="field">
+                        <span class="font-bold"> Unidad Tramitadora:</span> {{ usuario.cutramit?.cutramit + ' - ' +
+                        usuario.cutramit?.descorta}}
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label for="cusuario" class="col-fixed" style="width:100px">Código</label>
+                    <div class="col">
+                        <input [(ngModel)]="usuario.cusuario"
+                               required id="cusuario"
+                               type="text"
+                               [minlength]="8"
+                               [maxlength]="8"
+                               style="text-transform:uppercase"
+                               class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary">
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label for="activo" class="col-fixed" style="width:100px">Activo</label>
+                    <div class="col">
+                        <p-dropdown [options]="estadoActivo"
+                                    [(ngModel)]="usuario.activo"
+                                    [style]="{'width':'50%'}">
+                        </p-dropdown>
+                    </div>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="ocultarDialog()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveUsuario()"></button>
+            </ng-template>
+
+        </p-dialog>
+
+        <div class="card">
+            <p-table #dt [value]="usuarios"
+                         [rows]="10"
+                         [paginator]="true"
+                         [globalFilterFields]="['name','country.name','representative.name','status']"
+                         [(selection)]="usuarioSelected"
+                         [rowHover]="true"
+                         dataKey="id"
+                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                         [showCurrentPageReport]="true"
+                         [tableStyle]="{'min-width': '100%'}">
+
+                <ng-template pTemplate="caption">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        <h5 class="p-m-0">Gestión de Usuarios</h5>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr class="text-sm w-10">
+                        <th>Código</th>
+                        <th pSortableColumn="activo">Activo <p-sortIcon field="activo"></p-sortIcon></th>
+                        <th pSortableColumn="nombre">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+                        <th pSortableColumn="apellidos">Apellidos <p-sortIcon field="apellidos"></p-sortIcon></th>
+                        <th>UT </th>
+                        <th>Entidad </th>
+                        <th>Editar/Borrar</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-usuario>
+                    <tr class="text-sm w-10">
+                        <td>{{usuario.cusuario}}</td>
+                        <!-- <td>{{usuario.activo}}</td> -->
+                        <td>
+                            <i class="pi" [ngClass]="{'true-icon pi-check': usuario.activo, 'false-icon pi-times': !usuario.activo}"></i>
+                        </td>
+                        <td>{{usuario.nombre}}</td>
+                        <td>{{usuario.apellidos}}</td>
+                        <td>({{usuario.cutramit.cutramit}}) {{usuario.cutramit.descorta}}</td>
+	                      <td>{{usuario.centidad.xentidad}} ({{usuario.centidad.centidad}})</td>
+                        <td>
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editUsuario(usuario)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning ml-2" (click)="deleteUsuario(usuario)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        In total there are {{usuarios ? usuarios.length : 0 }} usuarios.
+                    </div>
+                </ng-template>
+            </p-table>
+
+        </div>
+
+
+
+
+
+
+    </span>
+    <ng-template #elseSuper>
+        <span>No tiene permisos para acceder al panel</span>
+    </ng-template>
+
+    <p-confirmDialog [style]="{width: '50vw'}"
+                     [baseZIndex]="10000"
+                     rejectButtonStyleClass="p-button-text">
+    </p-confirmDialog>
+
+  </div>

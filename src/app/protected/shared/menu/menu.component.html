@@ -1,0 +1,19 @@
+<p-menubar [model]="items">
+  <ng-template pTemplate="start">
+      <img src="assets/logo01.svg" height="40" class="mr-3">
+  </ng-template>
+
+    <button pButton
+          type="button"
+          icon="pi pi-users"
+          label="{{ usuario.nombre + ' ' + usuario.apellidos + ' (' + usuario.cusuario +') | UT: ' + usuario.cutramit?.cutramit }}"
+          class="mr-3"
+          [ngClass]="{activo: activo, noActivo: !activo}">
+    </button>
+  <button pButton icon="pi pi-power-off"
+                  label="Salir"
+                  class="p-button-outlined  p-button-danger"
+                  (click)="logout()"
+                  alt="salir"></button>
+</p-menubar>
+

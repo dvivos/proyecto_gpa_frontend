@@ -1,0 +1,149 @@
+<div class="mt-4">
+  <p-panel header="Cambio permisos de un usuario.">
+
+    <!-- Cuadro de diálogo que muestra mensajes al usuario -->
+    <p-dialog header="Info"
+              [(visible)]="mostrarDialog"
+              [modal]="true"
+              [style]="{width: '40vw'}"
+              [draggable]="false"
+              [closable]="true"
+              [resizable]="false">
+              <p>{{ msgGeneral }}</p>
+        <ng-template pTemplate="footer">
+            <p-button icon="pi pi-check" (click)="mostrarDialog=false" label="Ok" styleClass="p-button-text"></p-button>
+        </ng-template>
+
+    </p-dialog>
+
+    <!------------------------------------------>
+    <!-- Formulario que solicita los usuarios -->
+    <!------------------------------------------>
+    <form autocomplete="off"
+          [formGroup]="formUser"
+          (ngSubmit)="obtenerPermisosUsuarioRef()">
+
+        <!-- Input del usuario Origen -->
+        <div class="field mt-2 mb-5">
+          <input pInputText
+                 type="text"
+                 formControlName="usuarioCambiar"
+                 pInputText
+                 style="text-transform:uppercase;">
+          <label class="ml-3">Usuario para cambiar sus permisos</label>
+            <span *ngIf="usuarioCambiar">{{ ': ' + usuarioCambiar.nombre + ' ' +
+                                                  usuarioCambiar.apellidos }}</span>
+          <br>
+          <span class="aviso from-text text-danger mt-3"> {{ msgErrOrigen }} </span>
+        </div>
+
+        <!-- Input del usuario Destino -->
+        <div class="field mt-2 mb-5">
+          <input type="text"
+                formControlName="usuarioReferencia"
+                pInputText
+                style="text-transform:uppercase;">
+          <label class="ml-3">Usuario referencia del que copiar permisos</label>
+          <span *ngIf="usuarioReferencia">{{ ': ' + usuarioReferencia.nombre + ' ' +
+                                                    usuarioReferencia.apellidos }}</span>
+          <br>
+          <span class="aviso from-text text-danger mt-3"> {{ msgErrCopia }} </span>
+        </div>
+
+        <!-- Boton submit del formulario -->
+        <div class="flex justify-content-start">
+            <button pButton
+                    type="submit"
+                    label="Obtener permisos a aplicar"
+                    [disabled]="!superUser || !formUser.valid"
+                    class="mt-4">
+            </button>
+            <button pButton
+                    type="submit"
+                    label="Eliminar permisos"
+                    [disabled]="!superUser || !formUser.controls['usuarioCambiar'].valid"
+                    (click)="eliminaPermisos()"
+                    class="mt-4 ml-5 p-button-danger">
+            </button>
+        </div>
+
+    </form>
+  </p-panel>
+
+    <!---------------------------------------------->
+    <!-- Bloque que contiene la tabla de permisos -->
+    <!---------------------------------------------->
+    <div *ngIf="mostrarTabla === true" class="mt-4">
+        <p-panel header="Permisos a copiar" class="" >
+          <div class="text-red-600 m-4">
+              Los permisos del usuario {{ usuarioCambiar.cusuario }} van a ser sustituidos por los que seleccione.
+          </div>
+
+          <!------------------------------------->
+          <!-- Tabla para mostrar los permisos -->
+          <!------------------------------------->
+          <p-table [value]="permisosAplicar"
+                   [(selection)]="selectedPermisos"
+                   [rowHover]="true"
+                   [paginator]="true"
+                   [rows]="10">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>
+                      <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th>
+                    <th>Permiso</th>
+                    <th>Descripcion</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-permiso>
+                <tr class="p-selectable-row">
+                  <td>
+                    <p-tableCheckbox [value]="permiso"></p-tableCheckbox>
+                  </td>
+                  <td >
+                    <span class="p-column-title">Permiso</span>
+                    {{permiso.cpermiso}}
+                  </td>
+                  <td>
+                    <span class="p-column-title">Descripcion</span>
+                    {{permiso.descripcion}}
+                  </td>
+                </tr>
+            </ng-template>
+
+          </p-table>
+
+          <ng-template pTemplate="footer">
+            <div class="flex justify-content-evenly">
+
+                <button pButton
+                        label="Aplicar"
+                        icon="pi pi-check"
+                        class="p-button-success"
+                        (click)="actualizar()"
+                        [disabled]="!selectedPermisos || !selectedPermisos.length">
+                </button>
+
+                <button pButton
+                        label="Cancelar"
+                        icon="pi pi-times"
+                        class="p-button-danger"
+                        (click)="cancelar()">
+                </button>
+
+            </div>
+          </ng-template>
+
+        </p-panel>
+    </div>
+
+    <p-confirmDialog [style]="{width: '50vw'}"
+                     [baseZIndex]="10000"
+                     rejectButtonStyleClass="p-button-text">
+
+
+    </p-confirmDialog>
+
+
+</div>
