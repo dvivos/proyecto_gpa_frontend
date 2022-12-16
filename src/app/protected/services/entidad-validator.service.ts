@@ -10,19 +10,27 @@ import { Centidad } from '../../auth/interfaces/interfaces';
 })
 export class EntidadValidatorService implements AsyncValidator {
 
+  // Cogemos la URL base de la zona protegida.
   private urlProtected: string = environment.urlProtected;
-  private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
+
+  // Variable entidad del tipo Entidad.
   entidad: Centidad = {};
 
+  // Inyectamos el servicio HttpCLient
   constructor(private http: HttpClient) { }
 
-
+  /**
+   * Método que conprueba si una entidad existe.
+   *
+   * @param control
+   * @returns
+   */
   validate(control: AbstractControl): Observable<ValidationErrors | null> {
-
+    // Valor de entrada
     this.entidad.centidad = control.value;
-
+    // Endpoint de la API para consulta
     const url = `${this.urlProtected}/entidad`;
-
+    // Retornamos el resultado de la llamada al servicio
     return this.http.post<any[]>(url, this.entidad)
       .pipe(
         map( resp => {

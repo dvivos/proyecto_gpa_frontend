@@ -7,9 +7,11 @@ import { AbstractControl, FormControl, ValidationErrors } from '@angular/forms';
 })
 export class SharedService {
 
+  // Expresiones regulares para cotejar distintos campos.
   public nombreApellidoPattern: string = '([a-zA-Z]+) ([a-zA-Z]+)';
   public emailPattern: string = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
 
+  // Inyectamos la clase HttpClient
   constructor(private http: HttpClient) { }
 
   /**
@@ -24,6 +26,12 @@ export class SharedService {
       .then(data => { return data; });
   }
 
+  /**
+   * Mëtodo que comprueba si un año que viene por parámetro es igual al año actual
+   *
+   * @param control
+   * @returns bollean
+   */
   validaEjercicio( control: FormControl ): ValidationErrors | null {
 
     const valor: number = control.value;
@@ -40,6 +48,7 @@ export class SharedService {
 
 
   /**
+   * Método que comprueba si dos campos que vienen por parámetros son iguales
    *
    * @param campo1 Primer campo a comprar
    * @param campo2 Segundo campo a comparar

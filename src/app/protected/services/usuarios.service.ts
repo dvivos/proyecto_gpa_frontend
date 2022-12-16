@@ -10,16 +10,23 @@ import { AuthService } from '../../auth/services/auth.service';
 })
 export class UsuariosService {
 
+  // URL base de la parte protegida de la API
   private urlProtected: string = environment.urlProtected;
 
-  private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
-
+  // Inyectamos la clase HttpClient y el servicio de autenticación de usuarios
   constructor(private http: HttpClient,
               private authService: AuthService) { }
 
 
+  /**
+   * Método que obtiene un usuario por su código de usuario
+   *
+   * @param usuario
+   * @returns Usuario
+   */
   getUsuarioPorCodigo(usuario: Usuario): Observable<Usuario> {
 
+    // URL del endpoint de la API
     const url = `${this.urlProtected}/usuario`;
     const body = usuario;
 
@@ -27,29 +34,50 @@ export class UsuariosService {
 
   }
 
-
-
+  /**
+   * Método que obtiene todos los usuarios
+   *
+   * @returns List<Usuario>
+   */
   getUsuarios() {
+    // URL del endpoint de la API
     const url = `${this.urlProtected}/usuarios`;
 
     return this.http.get<any>(url);
   }
 
+  /**
+   * Método que obtiene los usuarios que no están activos
+   *
+   * @returns List<Usuario>
+   */
   getUsuariosNoActivos() {
+    // URL del endpoint de la API
     const url = `${this.urlProtected}/inactivos`;
 
     return this.http.get<any>(url);
   }
 
 
-
+  /**
+   * Método que obtiene las Unidades Tramitadoras
+   *
+   * @returns List<Cutramit>
+   */
   getUnidadesTramitadoras(): Observable<Cutramit[]>{
+    // URL del endpoint de la API
     const url = `${this.urlProtected}/unidades`;
 
     return this.http.get<Cutramit[]>(url);
   }
 
+  /**
+   * Método que obtiene un listado de usuarios filtrados por la API
+   *
+   * @returns List<Usuario>
+   */
   getUsuariosFilter() {
+    // URL del endpoint de la API
     const url = `${this.urlProtected}/usuarios`;
 
     return this.http.get<any>(url)
@@ -62,13 +90,26 @@ export class UsuariosService {
       });
   }
 
+  /**
+   * Método que actualiza los permisos de un usuario
+   *
+   * @param usuario Usuario
+   * @returns Respuesta del servicio
+   */
   actualizarPermisos(usuario: Usuario): Observable<Usuario>{
+    // URL del endpoint de la API
     const url = `${this.urlProtected}/usuario/actualizar`;
     return this.http.put<Usuario>(url, usuario);
   }
 
+  /**
+   * Método que actualiza un usuario
+   *
+   * @param usuario Usuario
+   * @returns
+   */
   actualizarUsuario(usuario: Usuario): Observable<any>{
-
+    // URL del endpoint de la API
     const url = `${this.urlProtected}/usuario/actualizar`;
     let body = usuario;
 
@@ -76,9 +117,16 @@ export class UsuariosService {
 
   }
 
+  /**
+   * Método que elimina un usuario
+   *
+   * @param usuario Usuario
+   * @returns
+   */
   borrarUsuario(usuario: Usuario): Observable<any>{
-
+    // URL del endpoint de la API
     const url = `${this.urlProtected}/usuario/baja`;
+
     const options = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
@@ -91,6 +139,11 @@ export class UsuariosService {
 
   }
 
+  /**
+   * Método que obtiene el usuario que está logueado en la aplicación.
+   *
+   * @returns Usuario
+   */
   getUsuarioActivo(): Usuario{
 
     // Variable local para almacenar los datos del usuario activo del tipo Usuario
